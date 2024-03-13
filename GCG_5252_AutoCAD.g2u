@@ -1,0 +1,1417 @@
+﻿Program.Sub.ScreenSU.Start
+Gui.SS_Form1..Create(BaseForm)
+Gui.SS_Form1..Caption("BOM Upload Totals")
+Gui.SS_Form1..Size(3615,4155)
+Gui.SS_Form1..Position(0,0)
+Gui.SS_Form1..AlwaysOnTop(False)
+Gui.SS_Form1..FontName("Arial")
+Gui.SS_Form1..FontSize(8)
+Gui.SS_Form1..ForeColor(0)
+Gui.SS_Form1..ControlBox(True)
+Gui.SS_Form1..MaxButton(False)
+Gui.SS_Form1..MinButton(False)
+Gui.SS_Form1..MousePointer(0)
+Gui.SS_Form1..Moveable(True)
+Gui.SS_Form1..Sizeable(False)
+Gui.SS_Form1..ShowInTaskBar(True)
+Gui.SS_Form1..TitleBar(True)
+Gui.SS_Form1..Event(UnLoad,ss_form1_unload)
+Gui.SS_Form1..minx(0)
+Gui.SS_Form1..miny(0)
+Gui.SS_Form1.lbl1.Create(label,"1st Level BOM Totals",True,1530,210,1,900,135,True,0,"Arial",8,,0,0)
+Gui.SS_Form1.lbl1.ControlGroup(0)
+Gui.SS_Form1.lbl1.BorderStyle(0)
+Gui.SS_Form1.lbl_txt1stAdd.Create(label,"BOM Children Added",True,1500,210,1,105,570,True,0,"Arial",8,,0,0)
+Gui.SS_Form1.lbl_txt1stAdd.ControlGroup(0)
+Gui.SS_Form1.lbl_txt1stAdd.BorderStyle(0)
+Gui.SS_Form1.txt1stAdd.Create(textbox,"",True,795,300,0,1995,510,False,0,"Arial",8,,1)
+Gui.SS_Form1.txt1stAdd.Text("")
+Gui.SS_Form1.txt1stAdd.TabStop(True)
+Gui.SS_Form1.txt1stAdd.TabIndex(2)
+Gui.SS_Form1.txt1stAdd.ControlGroup(0)
+Gui.SS_Form1.txt1stAdd.DefaultValue("")
+Gui.SS_Form1.lbl_txt1stRej.Create(label,"BOM Children Rejected",True,1650,210,1,105,990,True,0,"Arial",8,,0,0)
+Gui.SS_Form1.lbl_txt1stRej.ControlGroup(0)
+Gui.SS_Form1.lbl_txt1stRej.BorderStyle(0)
+Gui.SS_Form1.txt1stRej.Create(textbox,"",True,795,300,0,1995,930,False,0,"Arial",8,,1)
+Gui.SS_Form1.txt1stRej.Text("")
+Gui.SS_Form1.txt1stRej.TabStop(True)
+Gui.SS_Form1.txt1stRej.TabIndex(4)
+Gui.SS_Form1.txt1stRej.ControlGroup(0)
+Gui.SS_Form1.txt1stRej.DefaultValue("")
+Gui.SS_Form1.lbl2.Create(label,"2nd Level BOM Totals",True,1575,210,1,900,1560,True,0,"Arial",8,,0,0)
+Gui.SS_Form1.lbl2.ControlGroup(0)
+Gui.SS_Form1.lbl2.BorderStyle(0)
+Gui.SS_Form1.lbl_txt2ndAdd.Create(label,"BOM Children Added",True,1500,210,1,105,2010,True,0,"Arial",8,,0,0)
+Gui.SS_Form1.lbl_txt2ndAdd.ControlGroup(0)
+Gui.SS_Form1.lbl_txt2ndAdd.BorderStyle(0)
+Gui.SS_Form1.txt2ndAdd.Create(textbox,"",True,795,300,0,1995,1950,False,0,"Arial",8,,1)
+Gui.SS_Form1.txt2ndAdd.Text("")
+Gui.SS_Form1.txt2ndAdd.TabStop(True)
+Gui.SS_Form1.txt2ndAdd.TabIndex(7)
+Gui.SS_Form1.txt2ndAdd.ControlGroup(0)
+Gui.SS_Form1.txt2ndAdd.DefaultValue("")
+Gui.SS_Form1.lbl_txt2ndRej.Create(label,"BOM Children Rejected",True,1650,210,1,105,2415,True,0,"Arial",8,,0,0)
+Gui.SS_Form1.lbl_txt2ndRej.ControlGroup(0)
+Gui.SS_Form1.lbl_txt2ndRej.BorderStyle(0)
+Gui.SS_Form1.txt2ndRej.Create(textbox,"",True,795,300,0,1995,2370,False,0,"Arial",8,,1)
+Gui.SS_Form1.txt2ndRej.Text("")
+Gui.SS_Form1.txt2ndRej.TabStop(True)
+Gui.SS_Form1.txt2ndRej.TabIndex(9)
+Gui.SS_Form1.txt2ndRej.ControlGroup(0)
+Gui.SS_Form1.txt2ndRej.DefaultValue("")
+Gui.SS_Form1.cmdOk.Create(button)
+Gui.SS_Form1.cmdOk.Caption("Ok")
+Gui.SS_Form1.cmdOk.Visible(True)
+Gui.SS_Form1.cmdOk.Size(1000,375)
+Gui.SS_Form1.cmdOk.Zorder(0)
+Gui.SS_Form1.cmdOk.Position(1150,3000)
+Gui.SS_Form1.cmdOk.Enabled(True)
+Gui.SS_Form1.cmdOk.FontName("Arial")
+Gui.SS_Form1.cmdOk.FontSize(8)
+Gui.SS_Form1.cmdOk.TabStop(True)
+Gui.SS_Form1.cmdOk.TabIndex(1)
+Gui.SS_Form1.cmdOk.ControlGroup(0)
+Gui.SS_Form1.cmdOk.DefaultValue("")
+Gui.SS_Form1.cmdOk.Event(Click,ss_form1_unload)
+Program.Sub.ScreenSU.End
+
+Program.Sub.Preflight.Start
+Variable.Global.sSQL.Declare(String)
+Variable.Global.sParent.Declare(String)
+Variable.Global.sFilePath.Declare(String)
+
+Variable.Global.sData.Declare(String)
+Variable.Global.bParent.Declare(Boolean,True)
+Variable.Global.iCount.Declare(Long,1)
+Variable.Global.i1stAdd.Declare(Long,0)
+Variable.Global.i1stRej.Declare(Long,0)
+Variable.Global.i2ndAdd.Declare(Long,0)
+Variable.Global.i2ndRej.Declare(Long,0)
+Program.Sub.Preflight.End
+
+Program.Sub.Main.Start
+'Author: GaryB
+'Date:   10/10/18
+'Customer: Mestex.
+'Update the gcg_3002 to add document control for two types of new parts, assembly parts, and detail parts
+'GCG_5252_AutoCAD.g2u
+
+F.Intrinsic.Control.Try
+V.Local.sError.Declare(String, "")
+
+V.Local.sTemp.Declare(String)
+V.Local.sRet.Declare(String)
+
+'F.ODBC.Connection!Con.OpenConnection(V.Ambient.PDSN,V.Ambient.PUser,V.Ambient.PPass)
+f.ODBC.Connection!Con.OpenCompanyConnection
+
+'user selects the file they want to run
+F.Intrinsic.UI.ShowOpenFileDialog("","Comma File [*.csv]|*.csv","",V.Global.sFilePath)
+
+F.Intrinsic.Control.If(V.Global.sFilePath,<>,"***CANCEL***")
+	'gets the file name which is the parent part
+	F.Intrinsic.String.Split(V.Global.sFilePath,"\",V.Local.sTemp)
+	F.Intrinsic.String.Split(V.Local.sTemp(v.Local.sTemp.UBound),".",V.Local.sTemp)
+	V.Global.sParent.Set(V.Local.sTemp(0).Left20)
+
+	F.Intrinsic.File.File2String(V.Global.sFilePath,V.Global.sData)
+	F.Intrinsic.String.Split(V.Global.sData,V.Ambient.NewLine,V.Global.sData)
+'f.Intrinsic.Debug.InvokeDebugger
+'Function.Intrinsic.Debug.Stop
+
+    'check cross reference for SheetMetalStyle and GSS Inv Part
+	F.Intrinsic.Control.CallSub(Precheck)
+
+	'import process
+	F.Intrinsic.Control.CallSub(Import)
+
+	'update cutlist for all parts with bom flag = N
+	F.Intrinsic.Control.CallSub(Rebuildcutlist)
+
+	'display the ending screen
+	F.Intrinsic.Control.CallSub(Screen)
+
+F.Intrinsic.Control.Else
+	F.Intrinsic.Control.End
+
+F.Intrinsic.Control.EndIf
+
+
+F.Intrinsic.Control.Catch
+    F.Intrinsic.String.Build("Project: {0}{1}{1}Subroutine: {2}{1}Error Occurred {3} with description {4}{1}{1}GAB Version: {5}",V.Ambient.ScriptPath,V.Ambient.Newline,V.Ambient.CurrentSubroutine,V.Ambient.ErrorNumber,V.Ambient.ErrorDescription,V.Ambient.GABVersion,V.Local.sError)	F.Intrinsic.UI.Msgbox(V.Local.sError)
+	F.Intrinsic.Control.CallSub(Ss_form1_unload)
+Function.Intrinsic.Control.EndTTry
+
+
+Program.Sub.Main.End
+
+Program.Sub.Import.Start
+F.Intrinsic.Control.Try
+V.Local.sError.Declare(String,"")
+
+V.Local.iChoice.Declare(Long)
+V.Local.sLine.Declare(String)
+V.Local.sMsg.Declare(String)
+
+F.Intrinsic.Control.Label("Skip")
+V.Local.sLine.Redim(0,11)
+
+'if on child loop until it finds BOM Flag = N or until the count is greater than the file
+F.Intrinsic.Control.If(V.Global.bParent,=,False)
+	F.Intrinsic.Control.DoUntil(V.Local.sLine(10),=,"N","OR",V.Global.iCount,>,V.Global.sData.UBound)
+		F.Intrinsic.String.SplitCSV(V.Global.sData(v.Global.iCount),V.Local.sLine)
+		F.Intrinsic.Control.If(V.Local.sLine,<>,"")
+			F.Intrinsic.Control.If(V.Local.sLine(10),=,"N")
+'				F.Intrinsic.String.GSSPartString(V.Local.sLine(1).Left17,V.Local.sLine(2).Left3,V.Global.sParent)
+				V.Global.sParent.Set(V.Local.sLine(1).Left20)
+			F.Intrinsic.Control.EndIf
+		F.Intrinsic.Control.Else
+			V.Local.sLine.Redim(0,11)
+		F.Intrinsic.Control.EndIf
+		F.Intrinsic.Math.Add(V.Global.iCount,1,V.Global.iCount)
+	F.Intrinsic.Control.Loop
+	'if end of file go to inventory update
+	F.Intrinsic.Control.If(V.Global.iCount,>,V.Global.sData.UBound)
+		'no more to update
+		F.Intrinsic.Control.ExitSub
+	F.Intrinsic.Control.EndIf
+F.Intrinsic.Control.EndIf
+
+'checks to see if the parent already exists
+F.Intrinsic.String.Build("SELECT PARENT FROM V_BOM_MSTR WHERE PARENT = '{0}' AND SEQUENCE_BOM = '0000' ",V.Global.sParent,V.Global.sSQL)
+F.ODBC.Connection!Con.OpenLocalRecordsetRO("rst",V.Global.sSQL)
+'if already exists ask if they want to rebuild or abort the updload
+F.Intrinsic.Control.If(V.ODBC.Con!rst.EOF,=,False)
+	F.ODBC.Con!rst.Close
+	F.Intrinsic.String.Build("BOM Exists In Global Shop{0}BOM Parent: {1}{0}Delete and Add as a New BOM in Global Shop?",V.Ambient.NewLine,V.Global.sParent,V.Local.sMsg)
+	F.Intrinsic.UI.Msgbox(V.Local.sMsg,"BOM Found In Global Shop",1,V.Local.iChoice)
+	'choice yes
+	F.Intrinsic.Control.If(V.Local.iChoice,=,1)
+		'building just the initial parent
+		F.Intrinsic.Control.If(V.Global.bParent,=,True)
+			'remove existing bom records, leave engineering, inv part, and cutlist
+			F.Intrinsic.Control.CallSub(Rebuildbom)
+			F.Intrinsic.Control.GoTo("Skip")
+		'building the children as parents now
+		F.Intrinsic.Control.Else
+			F.Intrinsic.Control.CallSub(Rebuildchild)
+			F.Intrinsic.Control.GoTo("Skip")
+		F.Intrinsic.Control.EndIf
+	'choice no
+	F.Intrinsic.Control.Else
+		F.Intrinsic.Control.If(V.Global.bParent,=,True)
+			F.Intrinsic.Control.CallSub(Screen)
+		F.Intrinsic.Control.Else
+			'tracks the amount of times that the child was rejected
+			F.Intrinsic.Math.Add(V.Global.i2ndRej,1,V.Global.i2ndRej)
+			F.Intrinsic.Control.GoTo("Skip")
+		F.Intrinsic.Control.EndIf
+	F.Intrinsic.Control.EndIf
+F.Intrinsic.Control.Else
+	F.ODBC.Con!rst.Close
+	'building just the initial parent
+	F.Intrinsic.Control.If(V.Global.bParent,=,True)
+		F.Intrinsic.Control.CallSub(Rebuildbom)
+	F.Intrinsic.Control.GoTo("Skip")
+	'building the children as parents now
+	F.Intrinsic.Control.Else
+		F.Intrinsic.Control.CallSub(Rebuildchild)
+		F.Intrinsic.Control.GoTo("Skip")
+	F.Intrinsic.Control.EndIf
+F.Intrinsic.Control.EndIf
+
+F.Intrinsic.Control.Catch
+    F.Intrinsic.String.Build("Project: {0}{1}{1}Subroutine: {2}{1}Error Occurred {3} with description {4}{1}{1}GAB Version: {5}",V.Ambient.ScriptPath,V.Ambient.Newline,V.Ambient.CurrentSubroutine,V.Ambient.ErrorNumber,V.Ambient.ErrorDescription,V.Ambient.GABVersion,V.Local.sError) 
+	F.Intrinsic.UI.Msgbox(V.Local.sError)
+	F.Intrinsic.Control.CallSub(Ss_form1_unload)
+Function.Intrinsic.Control.EndTry
+
+
+Program.Sub.Import.End
+
+Program.Sub.RebuildBOM.Start
+F.Intrinsic.Control.Try
+V.Local.sError.Declare(String,"")
+
+V.Local.sRet.Declare(String)
+V.Local.iHandle.Declare(Long)
+V.Local.sLine.Declare(String)
+V.Local.iCount.Declare(Long,1)
+V.Local.iSequence.Declare(Long)
+V.Local.sSequence.Declare(String)
+V.Local.iInc.Declare(Long)
+V.Local.sPL.Declare(String)
+V.Local.sSourceCode.Declare(String)
+V.Local.sDesc.Declare(String)
+V.Local.sPart.Declare(String)
+v.Local.sDetailFilePath.Declare(String)
+v.Local.sFilename.Declare(String)
+v.Local.iLinkID.Declare(Long)
+v.Local.iLength.Declare(Long)
+v.Local.sTemp.Declare(String)
+v.Local.sKey.Declare(String)
+
+'get increment amount
+F.ODBC.Connection!Con.ExecuteAndReturn("SELECT F_LONG FROM V_OP_HEADER WHERE ID = '401096' ",V.Local.iInc)
+'If never changed the record doesn't exist so default it to 100
+F.Intrinsic.Control.If(V.Local.iInc,=,0)
+	V.Local.iInc.Set(100)
+F.Intrinsic.Control.EndIf
+'f.Intrinsic.Debug.InvokeDebugger
+'Function.Intrinsic.Debug.Stop
+'delete parent and rebuild
+F.Intrinsic.String.Build("DELETE  FROM BOM_MSTR WHERE PARENT = '{0}' ",V.Global.sParent.Trim,V.Global.sSQL)
+F.ODBC.Connection!Con.Execute(V.Global.sSQL)
+
+F.Intrinsic.String.Build("SELECT * FROM BOM_MSTR WHERE PARENT = '{0}' ",V.Global.sParent.Trim,V.Global.sSQL)
+F.ODBC.Connection!Con.OpenLocalRecordsetRW("rst",V.Global.sSQL)
+
+
+'Create parent inventory if not found
+F.Intrinsic.String.Build("SELECT * FROM INVENTORY_MSTR WHERE PART = '{0}' ",V.Global.sParent.Trim,V.Global.sSQL)
+F.ODBC.Connection!Con.OpenLocalRecordsetRO("rstInv",V.Global.sSQL)
+F.Intrinsic.Control.If(V.ODBC.Con!rstInv.EOF,=,True)
+	F.ODBC.Con!rstInv.Close
+	
+	F.Global.Inventory.CreatePart(V.Global.sParent.Trim,"EA","","","MP","F","","","0","NOMAINT")
+	F.ODBC.Connection!Con.OpenLocalRecordsetRW("rstInv",V.Global.sSQL)
+
+
+
+	F.Intrinsic.String.Build("SELECT * FROM INVENTORY_MST2 WHERE PART = '{0}' ",V.Global.sParent.Trim,V.Global.sSQL)
+	F.ODBC.Connection!Con.OpenLocalRecordsetRW("rstInv2",V.Global.sSQL)
+'	F.Intrinsic.String.Build("SELECT * FROM INVENTORY_MST3 WHERE PART = '{0}' ",V.Global.sParent.Trim,V.Global.sSQL)
+'	F.ODBC.Connection!Con.OpenLocalRecordsetRW("rstInv3",V.Global.sSQL)
+'	F.ODBC.Con!rstInv.AddNew
+'	F.ODBC.Con!rstInv2.AddNew
+'	F.ODBC.Con!rstInv3.AddNew
+'	F.ODBC.Con!rstInv.Set!PART(V.Global.sParent.Trim)
+'	F.ODBC.Con!rstInv2.Set!PART(V.Global.sParent.Trim)
+'	F.ODBC.Con!rstInv3.Set!PART(V.Global.sParent.Trim)
+'	F.ODBC.Con!rstInv.Set!PRODUCT_LINE("MP")
+'	F.ODBC.Con!rstInv.Set!UM_INVENTORY("EA")
+	F.ODBC.Con!rstInv.Set!CODE_TOTAL("N")
+'	F.ODBC.Con!rstInv2.Set!CODE_SOURCE("F")
+	F.ODBC.Con!rstInv2.Set!TEXT_INFO1("Y")
+	F.ODBC.Con!rstInv.Update
+	F.ODBC.Con!rstInv2.Update
+'	F.ODBC.Con!rstInv3.Update
+	F.ODBC.Con!rstInv2.Close
+'	F.ODBC.Con!rstInv3.Close
+
+	F.Intrinsic.String.Build("SELECT * FROM BOM_ENG WHERE PART = '{0}' ",V.Global.sParent.Trim,V.Global.sSQL)
+	F.ODBC.Connection!Con.OpenLocalRecordsetRW("rstEng",V.Global.sSQL)
+	F.Intrinsic.Control.If(V.ODBC.Con!rstENG.EOF,=,True)
+		F.ODBC.Con!rstENG.AddNew
+		F.ODBC.Con!rstENG.Set!PART(V.Global.sParent.Trim)
+		F.ODBC.Con!rstENG.Set!IS_PARENT("Y")
+		F.ODBC.Con!rstENG.Update
+	F.Intrinsic.Control.EndIf
+	F.ODBC.Con!rstENG.Close
+F.Intrinsic.Control.EndIf
+F.ODBC.Con!rstInv.Close
+
+'rebuild parent
+F.ODBC.Con!rst.AddNew
+F.ODBC.Con!rst.Set!PARENT(V.Global.sParent.Trim)
+F.ODBC.Con!rst.Set!SEQUENCE_BOM("0000")
+F.ODBC.Con!rst.Set!INSERT_BOM("00")
+F.ODBC.Con!rst.Set!DATE_MAINTENANCE(V.Ambient.Date.FormatYYMMDD)
+F.ODBC.Con!rst.Set!COST(0)
+F.ODBC.Con!rst.Set!QUANTITY(1)
+F.ODBC.Con!rst.Set!UM_INVENTORY("EA")
+F.ODBC.Con!rst.Set!QUANTITY_6(1)
+F.ODBC.Con!rst.Set!FREQUENCY(0)
+F.ODBC.Con!rst.Set!DATE_LAST_CHG(V.Ambient.Date.FormatYYYYMMDD)
+F.ODBC.Con!rst.Set!TIME_LAST_CHG(V.Ambient.Time.FormatHHNNSS00)
+F.ODBC.Con!rst.Set!LAST_CHG_BY(V.Caller.User)
+F.ODBC.Con!rst.Set!LAST_CHG_PROG("GCG_5252")
+F.ODBC.Con!rst.Update
+'this should be an assembly part - this is the main BOM parent  
+          v.Local.sPart.Set(v.Global.sParent.Trim)
+          f.Intrinsic.String.Len(v.Local.sPart.Trim,v.Local.iLength)
+          f.Intrinsic.Control.If(v.Local.iLength,=,14)         
+'part not found it is new add it to document control
+             v.Local.sKey.Set(v.Local.sPart.Trim)
+             f.Intrinsic.String.Mid(v.Local.sPart,9,1,v.Local.sTemp) 
+             f.Intrinsic.String.Build("\\dlsrv-adv002\DWF_Files\dwg_fab\Assembly\{0}00\Drawings\",v.Local.sTemp,v.Local.sDetailFilePath)  
+             f.Intrinsic.String.Right(v.Local.sPart.Trim,8,v.Local.sTemp)
+             f.Intrinsic.String.Build("{0}.idw.dwf",v.Local.sTemp,v.Local.sFileName)
+             F.Global.DocumentControl.CreateReference(V.Local.sKey,30,V.Local.iLinkID)             
+             f.Intrinsic.String.Build("{0}{1}",v.Local.sDetailFilePath,v.Local.sFilename,v.Local.sDetailFilePath)
+		     F.Global.DocumentControl.AddDocument(V.Local.iLinkID,V.Local.sDetailFilePath,,1,"dwg")
+          f.Intrinsic.Control.EndIf
+
+F.Intrinsic.Control.DoUntil(V.Local.iCount,>,V.Global.sData.UBound)
+	F.Intrinsic.String.SplitCSV(V.Global.sData(v.Local.iCount),V.Local.sLine)
+	F.Intrinsic.Control.If(V.Local.sLine,=,"")
+		F.Intrinsic.Control.ExitDo
+	F.Intrinsic.Control.EndIf
+	F.Intrinsic.Math.Add(V.Global.i1stAdd,1,V.Global.i1stAdd)
+	'Create component inventory if not found
+'	F.Intrinsic.String.GSSPartString(V.Local.sLine(1).Left17,V.Local.sLine(2).Left3,V.Local.sPart)
+	V.Local.sPart.Set(V.Local.sLine(1).Left20)
+	F.Intrinsic.String.Build("SELECT * FROM INVENTORY_MSTR WHERE PART = '{0}' ",V.Local.sPart.Trim,V.Global.sSQL)
+	F.ODBC.Connection!Con.OpenLocalRecordsetRW("rstInv",V.Global.sSQL)
+	F.Intrinsic.Control.If(V.ODBC.Con!rstInv.EOF,=,True)
+		F.ODBC.Con!rstInv.Close
+		F.Intrinsic.Control.If(V.Local.sLine(10).Trim,=,"P")
+			V.Local.sPL.Set("PP")
+		F.Intrinsic.Control.Else
+			V.Local.sPL.Set("MP")
+		F.Intrinsic.Control.EndIf
+		F.Intrinsic.Control.If(V.Local.sLine(10).Trim,=,"N","OR",V.Local.sLine(10).Trim,=,"F",V.Local.sLine(10).Trim,=,"S")
+			V.Local.sSourceCode.Set("F")
+		F.Intrinsic.Control.Else
+			V.Local.sSourceCode.Set("P")
+		F.Intrinsic.Control.EndIf
+		
+'********************	
+'see if this is a new assembly part or detail part	
+'for detail parts the format is 2 digits  .   8 digits  ex 10.31047985
+'for assembly parts it is 14 numeric digits  ex 81000030764846 
+'see if part is new
+    '  v.Local.sPart.Set(v.Global.sParent.Trim)
+'part not found if is new see if we will add it to document control
+       v.Local.sKey.Set(v.Local.sPart.Trim)
+'see if this one is a detail part
+       f.Intrinsic.String.Split(v.Local.sPart,".",v.Local.sTemp)
+       f.Intrinsic.String.Len(v.Local.sTemp(0),v.Local.iLength)
+'if there are 2 characters in the first temp spot then this is a detail part       
+       f.Intrinsic.Control.If(v.Local.iLength,=,2)
+          f.Intrinsic.String.Mid(v.Local.sPart,7,2,v.Local.sTemp)
+          f.Intrinsic.String.Build("\\dlsrv-adv002\DWF_Files\dwg_fab\Details\{0}000\Drawings\",v.Local.sTemp, v.Local.sDetailFilePath)
+          f.Intrinsic.String.Right(v.Local.sPart.Trim,8,v.Local.sTemp)
+          f.Intrinsic.String.Build("{0}.idw.dwf",v.Local.sTemp,v.Local.sFileName)
+' the document control type for BOMs is 30          
+          F.Global.DocumentControl.CreateReference(V.Local.sKey,30,V.Local.iLinkID)
+          f.Intrinsic.String.Build("{0}{1}",v.Local.sDetailFilePath,v.Local.sFilename,v.Local.sDetailFilePath)
+		  F.Global.DocumentControl.AddDocument(V.Local.iLinkID,V.Local.sDetailFilePath,,1,"dwg")
+       f.Intrinsic.Control.Else
+'see if this is an assembly part     
+          f.Intrinsic.String.Len(v.Local.sPart.Trim,v.Local.iLength)
+          f.Intrinsic.Control.If(v.Local.iLength,=,14)         
+'part not found it is new add it to document control
+             f.Intrinsic.String.Mid(v.Local.sPart,9,1,v.Local.sTemp) 
+             f.Intrinsic.String.Build("\\dlsrv-adv002\DWF_Files\dwg_fab\Assembly\{0}00\Drawings\",v.Local.sTemp,v.Local.sDetailFilePath)  
+             f.Intrinsic.String.Right(v.Local.sPart.Trim,8,v.Local.sTemp)
+             f.Intrinsic.String.Build("{0}.idw.dwf",v.Local.sTemp,v.Local.sFileName)
+             F.Global.DocumentControl.CreateReference(V.Local.sKey,30,V.Local.iLinkID)
+             f.Intrinsic.String.Build("{0}{1}",v.Local.sDetailFilePath,v.Local.sFilename,v.Local.sDetailFilePath)
+		     F.Global.DocumentControl.AddDocument(V.Local.iLinkID,V.Local.sDetailFilePath,,1,"dwg")
+          f.Intrinsic.Control.EndIf
+       f.Intrinsic.Control.EndIf       
+
+'********************
+		'descripton
+		V.Local.sDesc.Set(V.Local.sLine(3).Left30)
+		F.Global.Inventory.CreatePart(V.Local.sPart.Trim,"EA",V.Local.sDesc.Trim,"",V.Local.sPL,V.Local.sSourceCode,"","","0","NOMAINT")
+		F.ODBC.Connection!Con.OpenLocalRecordsetRW("rstInv",V.Global.sSQL)
+		F.Intrinsic.String.Build("SELECT * FROM INVENTORY_MST2 WHERE PART = '{0}' ",V.Local.sPart.Trim,V.Global.sSQL)
+		F.ODBC.Connection!Con.OpenLocalRecordsetRW("rstInv2",V.Global.sSQL)
+'		F.Intrinsic.String.Build("SELECT * FROM INVENTORY_MST3 WHERE PART = '{0}' ",V.Local.sLine(1).Trim,V.Global.sSQL)
+'		F.ODBC.Connection!Con.OpenLocalRecordsetRW("rstInv3",V.Global.sSQL)
+'		F.ODBC.Con!rstInv.AddNew
+'		F.ODBC.Con!rstInv2.AddNew
+'		F.ODBC.Con!rstInv3.AddNew
+'		F.ODBC.Con!rstInv.Set!PART(V.Local.sLine(1).Trim)
+'		F.ODBC.Con!rstInv2.Set!PART(V.Local.sLine(1).Trim)
+'		F.ODBC.Con!rstInv3.Set!PART(V.Local.sLine(1).Trim)
+'		F.ODBC.Con!rstInv.Set!DESCRIPTION(V.Local.sLine(3).Trim)
+'		F.ODBC.Con!rstInv.Set!UM_INVENTORY("EA")
+'		F.Intrinsic.Control.If(V.Local.sLine(10).Trim,=,"P")
+'			F.ODBC.Con!rstInv.Set!PRODUCT_LINE("PP")
+'		F.Intrinsic.Control.Else
+'			F.ODBC.Con!rstInv.Set!PRODUCT_LINE("MP")
+'		F.Intrinsic.Control.EndIf
+		F.Intrinsic.Control.If(V.Local.sLine(9).Trim,=,"")
+			F.ODBC.Con!rstInv.Set!CODE_TOTAL("N")
+		F.Intrinsic.Control.Else
+			F.ODBC.Con!rstInv.Set!CODE_TOTAL(V.Local.sLine(9).Trim)
+		F.Intrinsic.Control.EndIf
+'		F.Intrinsic.Control.If(V.Local.sLine(10).Trim,=,"N","OR",V.Local.sLine(10).Trim,=,"F",V.Local.sLine(10).Trim,=,"S")
+'			F.ODBC.Con!rstInv2.Set!CODE_SOURCE("F")
+'		F.Intrinsic.Control.Else
+'			F.ODBC.Con!rstInv2.Set!CODE_SOURCE("P")
+'		F.Intrinsic.Control.EndIf
+		F.ODBC.Con!rstInv2.Set!TEXT_INFO2(V.Local.sLine(2).Trim)
+		F.ODBC.Con!rstInv.Update
+		F.ODBC.Con!rstInv2.Update
+'		F.ODBC.Con!rstInv3.Update
+		F.ODBC.Con!rstInv2.Close
+'		F.ODBC.Con!rstInv3.Close
+
+		F.Intrinsic.String.Build("SELECT * FROM BOM_ENG WHERE PART = '{0}' ",V.Local.sPart.Trim,V.Global.sSQL)
+		F.ODBC.Connection!Con.OpenLocalRecordsetRW("rstEng",V.Global.sSQL)
+		F.Intrinsic.Control.If(V.ODBC.Con!rstENG.EOF,=,True)
+			F.ODBC.Con!rstENG.AddNew
+			F.ODBC.Con!rstENG.Set!PART(V.Local.sPart.Trim)
+			F.ODBC.Con!rstENG.Set!DESCRIPTION(V.Local.sDesc.Trim)
+			F.ODBC.Con!rstENG.Set!MEMO_1(V.Local.sLine(8).Trim)
+			F.ODBC.Con!rstENG.Update
+		F.Intrinsic.Control.EndIf
+		F.ODBC.Con!rstENG.Close
+
+	F.Intrinsic.Control.EndIf
+	F.ODBC.Con!rstInv.Close
+
+	'check to see if overwrite flag is checked
+	F.Intrinsic.Control.If(V.Local.sLine(11),=,"Y")
+		F.Intrinsic.Control.CallSub(Overwrite,"Part",V.Local.sPart.Trim,"Description",V.Local.sLine(3).Trim,"Rev",V.Local.sLine(2).Trim)
+	F.Intrinsic.Control.Else
+		F.Intrinsic.String.Build("SELECT * FROM INVENTORY_MST2 WHERE PART = '{0}' ",V.Local.sPart.Trim,V.Global.sSQL)
+		F.ODBC.Connection!Con.OpenLocalRecordsetRW("rstInv2",V.Global.sSQL)
+		F.ODBC.Con!rstInv2.Set!TEXT_INFO2(V.Local.sLine(2).Trim)
+		F.ODBC.Con!rstInv2.Update
+		F.ODBC.Con!rstInv2.Close
+	F.Intrinsic.Control.EndIf
+
+	'select statement that gets the cost for the part
+	F.Intrinsic.String.Build("SELECT AMT_COST FROM V_INVENTORY_MSTR WHERE PART = '{0}' ",V.Local.sPart.Trim,V.Global.sSQL)
+	F.ODBC.Connection!Con.OpenLocalRecordsetRO("rstCost",V.Global.sSQL)
+
+	'create children
+	F.ODBC.Con!rst.AddNew
+	F.ODBC.Con!rst.Set!PARENT(V.Global.sParent.Trim)
+	F.Intrinsic.Math.Add(V.Local.iSequence,V.Local.iInc,V.Local.iSequence)
+	F.Intrinsic.String.Format(V.Local.iSequence,"0000",V.Local.sSequence)
+	F.ODBC.Con!rst.Set!SEQUENCE_BOM(V.Local.sSequence)
+	F.ODBC.Con!rst.Set!TAG(V.Local.sLine(0).Format000)
+	F.ODBC.Con!rst.Set!PART(V.Local.sPart.Trim)
+	F.ODBC.Con!rst.Set!QUANTITY(V.Local.sLine(4).Trim)
+	F.Intrinsic.Control.If(V.ODBC.Con!rstCost.EOF,=,False)
+		F.Intrinsic.Control.If(V.ODBC.Con!rstCost.FieldValTrim!AMT_COST,<>,"")
+			F.ODBC.Con!rst.Set!COST(V.ODBC.Con!rstCost.FieldValFloat!AMT_COST)
+		F.Intrinsic.Control.Else
+			F.ODBC.Con!rst.set!COST(0)
+		F.Intrinsic.Control.EndIf
+	F.Intrinsic.Control.Else
+		F.ODBC.Con!rst.Set!COST(0)
+	F.Intrinsic.Control.EndIf
+	F.ODBC.Con!rstCost.Close
+	'select cases for BOM Flag field
+	F.Intrinsic.Control.SelectCase(V.Local.sLine(10).Trim)
+		F.Intrinsic.Control.Case("N")
+			F.ODBC.Con!rst.Set!CATEGORY("P")
+			F.ODBC.Con!rst.Set!SOURCE("F")
+		F.Intrinsic.Control.Case("P")
+			F.ODBC.Con!rst.Set!CATEGORY("")
+			F.ODBC.Con!rst.Set!SOURCE("P")
+		F.Intrinsic.Control.Case("F")
+			F.ODBC.Con!rst.Set!CATEGORY("")
+			F.ODBC.Con!rst.Set!SOURCE("M")
+		F.Intrinsic.Control.Case("S")
+			F.ODBC.Con!rst.Set!CATEGORY("P")
+			F.ODBC.Con!rst.Set!SOURCE("F")
+	F.Intrinsic.Control.EndSelect
+
+	F.ODBC.Con!rst.Set!INSERT_BOM("00")
+	F.ODBC.Con!rst.Set!DATE_MAINTENANCE(V.Ambient.Date.FormatYYMMDD)
+	F.ODBC.Con!rst.Set!DATE_LAST_CHG(V.Ambient.Date.FormatYYYYMMDD)
+	F.ODBC.Con!rst.Set!UM_INVENTORY("EA")
+	F.ODBC.Con!rst.Set!QUANTITY_6(V.Local.sLine(4).Trim)
+	F.ODBC.Con!rst.Set!FREQUENCY(0)
+	F.ODBC.Con!rst.Set!TIME_LAST_CHG(V.Ambient.Time.FormatHHNNSS00)
+	F.ODBC.Con!rst.Set!LAST_CHG_BY(V.Caller.User)
+	F.ODBC.Con!rst.Set!LAST_CHG_PROG("GCG_5252")
+
+	'UPDATE
+	F.ODBC.Con!rst.Update
+	F.Intrinsic.Math.Add(V.Local.iCount,1,V.Local.iCount)
+F.Intrinsic.Control.Loop
+F.ODBC.Con!rst.Close
+
+'set false and do import children
+V.Global.bParent.Set(False)
+
+F.Intrinsic.Control.Catch
+    F.Intrinsic.String.Build("Project: {0}{1}{1}Subroutine: {2}{1}Error Occurred {3} with description {4}{1}{1}GAB Version: {5}",V.Ambient.ScriptPath,V.Ambient.Newline,V.Ambient.CurrentSubroutine,V.Ambient.ErrorNumber,V.Ambient.ErrorDescription,V.Ambient.GABVersion,V.Local.sError) 
+	F.Intrinsic.UI.Msgbox(V.Local.sError)
+	F.Intrinsic.Control.CallSub(Ss_form1_unload)
+Function.Intrinsic.Control.EndTry
+
+Program.Sub.RebuildBOM.End
+
+Program.Sub.PreCheck.Start
+F.Intrinsic.Control.Try
+V.Local.sError.Declare(String,"")
+
+V.Local.sProp.Declare(String)
+V.Local.sRet.Declare(String)
+V.Local.bStatus.Declare(Boolean,True)
+V.Local.sValues.Declare(String)
+V.Local.iLength.Declare(Long)
+V.Local.sAllign.Declare(String)
+v.Local.iAllign.Declare(Long)
+V.Local.sLine.Declare(String)
+V.Local.iCount.Declare(Long,1)
+V.Local.sPart.Declare(String)
+V.Local.sFilePath.Declare(String)
+v.Local.sDetailFilePath.Declare(String)
+v.Local.sAssemFilePath.Declare(String)
+v.Local.sFileName.Declare(String)
+v.Local.sPartNum.Declare(String)
+v.Local.iLinkId.Declare(Long)
+
+F.Intrinsic.String.Split("20*!*3*!*20*!*20*!*20*!*10*!*100*!*8*!*8*!*86","*!*",V.Local.iLength)
+F.Intrinsic.String.Split("0*!*0*!*0*!*0*!*0*!*0*!*0*!*0*!*0*!*0","*!*",V.Local.iAllign)
+F.Intrinsic.String.Split("PARENT*!*ITE*!*PART*!*SHEET METAL STYLE*!*GSS INVENTORY PART*!*PROP CODE*!*MESSAGE*!*RUN DATE*!*RUN TIME*!*USER ID","*!*",V.Local.sValues)
+F.Intrinsic.String.PositionalString(V.Local.sValues,V.Local.iLength,V.Local.iAllign,V.Local.sRet)
+
+F.Intrinsic.Control.DoUntil(V.Local.iCount,>,V.Global.sData.UBound)
+	F.Intrinsic.String.SplitCSV(V.Global.sData(v.Local.iCount),V.Local.sLine)
+	F.Intrinsic.Control.If(V.Local.sLine,=,"")
+		F.Intrinsic.Control.ExitDo
+	F.Intrinsic.Control.EndIf
+	F.Intrinsic.Control.If(V.Local.sLine(7),=,"")
+		F.Intrinsic.Control.GoTo("Skip")
+	F.Intrinsic.Control.EndIf
+	'Check to make sure that sheetmetalstyle has a reference to inventory part
+	F.Intrinsic.String.Build("SELECT PART FROM GCG_3002_STYLE_XREF WHERE SM_STYLE = '{0}' ",V.Local.sLine(7).Trim,V.Global.sSQL)
+	F.ODBC.Connection!Con.OpenLocalRecordsetRO("rst",V.Global.sSQL)
+	'there is a reference now see if the parts property code is set
+	F.Intrinsic.Control.If(V.ODBC.Con!rst.EOF,=,False)
+		V.Local.sPart.Set(V.ODBC.Con!rst.FieldValTrim!PART)
+	F.Intrinsic.Control.Else
+		V.Local.sPart.Set("")
+		'error message printed to string
+		f.Intrinsic.String.Build("{0}*!*{1}*!*{2}*!*{3}*!**!**!*Sheet Metal Style Cross Reference Missing*!*{4}*!*{5}*!*{6}",v.Global.sParent,v.Local.sLine(0).Format000,v.Local.sLine(1),v.Local.sLine(7),v.Ambient.Date.FormatYYYYMMDD,v.Ambient.Time,v.Caller.User,v.Local.sValues)
+		F.Intrinsic.String.Split(V.Local.sValues,"*!*",V.Local.sValues)
+		F.Intrinsic.String.PositionalString(V.Local.sValues,V.Local.iLength,V.Local.iAllign,V.Local.sValues)
+		F.Intrinsic.String.Build("{0}{1}{2}",V.Local.sRet,V.Ambient.NewLine,V.Local.sValues,V.Local.sRet)
+	F.Intrinsic.Control.EndIf
+	F.ODBC.Con!rst.Close
+
+	F.Intrinsic.String.Build("SELECT PROP_CODE FROM V_INVENTORY_MST2 WHERE PART = '{0}' ",V.Local.sPart.Trim,V.Global.sSQL)
+	F.ODBC.Connection!Con.OpenLocalRecordsetRO("rstProp",V.Global.sSQL)
+	'there is a property code, now see if shape and property code is available
+	F.Intrinsic.Control.If(V.ODBC.Con!rstProp.EOF,=,False)
+		V.Local.sProp.Set(V.ODBC.Con!rstProp.FieldValTrim!PROP_CODE)
+	F.Intrinsic.Control.Else
+		V.Local.sProp.Set("")
+		'error message printing to string
+		f.Intrinsic.String.Build("{0}*!*{1}*!*{2}*!*{3}*!**!**!*Shape & Property Code Not Assigned to Inventory Part.*!*{4}*!*{5}*!*{6}",v.Global.sParent,v.Local.sLine(0).Format000,v.Local.sLine(1),v.Local.sLine(7),v.Ambient.Date.FormatYYYYMMDD,v.Ambient.Time,v.Caller.User,v.Local.sValues)
+		F.Intrinsic.String.Split(V.Local.sValues,"*!*",V.Local.sValues)
+		F.Intrinsic.String.PositionalString(V.Local.sValues,V.Local.iLength,V.Local.iAllign,V.Local.sValues)
+		F.Intrinsic.String.Build("{0}{1}{2}",V.Local.sRet,V.Ambient.NewLine,V.Local.sValues,V.Local.sRet)
+	F.Intrinsic.Control.EndIf
+	F.ODBC.Con!rstProp.Close
+
+	F.Intrinsic.String.Build("SELECT SHAPE_CODE FROM V_RTR_CUT_SHAPE WHERE SHAPE_CODE = '{0}' ",v.Local.sProp.Trim,v.Global.sSQL)
+	F.ODBC.Connection!Con.OpenLocalRecordsetRo("rstShape",V.Global.sSQL)
+	F.Intrinsic.Control.If(V.ODBC.Con!rstShape.EOF,=,True)
+		V.Local.bStatus.Set(False)
+		'tracks the amount of first level boms that have been rejected
+		F.Intrinsic.Math.Add(V.Global.i1stRej,1,V.Global.i1stRej)
+		f.Intrinsic.String.Build("{0}*!*{1}*!*{2}*!*{3}*!**!**!*Shape & Properties Code Not Found*!*{4}*!*{5}*!*{6}",v.Global.sParent.Trim,v.Local.sLine(0).Format000,v.Local.sLine(1).Trim,v.Local.sLine(7).Trim,v.Ambient.Date.FormatYYYYMMDD,v.Ambient.Time,v.Caller.User,v.Local.sValues)
+		F.Intrinsic.String.Split(V.Local.sValues,"*!*",V.Local.sValues)
+		F.Intrinsic.String.PositionalString(V.Local.sValues,V.Local.iLength,V.Local.iAllign,V.Local.sValues)
+		F.Intrinsic.String.Build("{0}{1}{2}",V.Local.sRet,V.Ambient.NewLine,V.Local.sValues,V.Local.sRet)
+	F.Intrinsic.Control.EndIf
+	F.ODBC.Con!rstShape.Close
+
+	F.Intrinsic.Control.Label("Skip")
+	F.Intrinsic.Math.Add(V.Local.iCount,1,V.Local.iCount)
+
+F.Intrinsic.Control.Loop
+
+F.Intrinsic.Control.If(V.Local.bStatus,=,False)
+	F.Intrinsic.String.Build("{0}\XBOMX{1}.ERR",V.Caller.FilesDir,V.Caller.CompanyCode,V.Local.sFilePath)
+	F.Intrinsic.File.String2File(V.Local.sFilePath,V.Local.sRet)
+	F.Intrinsic.String.Build("An error has been found please check{0}{1}",V.Ambient.NewLine,V.Local.sFilePath,V.Local.sFilePath)
+	F.Intrinsic.UI.Msgbox(V.Local.sFilePath,"Error")
+	F.Intrinsic.Control.CallSub(Screen)
+F.Intrinsic.Control.EndIf
+
+F.Intrinsic.Control.Catch
+    F.Intrinsic.String.Build("Project: {0}{1}{1}Subroutine: {2}{1}Error Occurred {3} with description {4}{1}{1}GAB Version: {5}",V.Ambient.ScriptPath,V.Ambient.Newline,V.Ambient.CurrentSubroutine,V.Ambient.ErrorNumber,V.Ambient.ErrorDescription,V.Ambient.GABVersion,V.Local.sError) 
+	F.Intrinsic.UI.Msgbox(V.Local.sError)
+	F.Intrinsic.Control.CallSub(Ss_form1_unload)
+Function.Intrinsic.Control.EndTry
+
+Program.Sub.PreCheck.End
+
+Program.Sub.RebuildChild.Start
+F.Intrinsic.Control.Try
+V.Local.sError.Declare(String,"")
+
+V.Local.sLine.Declare(String)
+V.Local.iInc.Declare(Long)
+V.Local.iSequence.Declare(Long)
+V.Local.sSequence.Declare(String)
+V.Local.iCount.Declare(Long)
+
+'get increment amount
+F.ODBC.Connection!Con.ExecuteAndReturn("SELECT F_LONG FROM V_OP_HEADER WHERE ID = '401096' ",V.Local.iInc)
+'if never set before then set default 100
+F.Intrinsic.Control.If(V.Local.iInc,=,0)
+	V.Local.iInc.Set(100)
+F.Intrinsic.Control.EndIf
+
+'delete parent and rebuild
+F.Intrinsic.String.Build("DELETE FROM BOM_MSTR WHERE PARENT = '{0}' ",V.Global.sParent.Trim,V.Global.sSQL)
+F.ODBC.Connection!Con.Execute(V.Global.sSQL)
+
+F.Intrinsic.String.Build("SELECT * FROM BOM_MSTR WHERE PARENT = '{0}' ",V.Global.sParent.Trim,V.Global.sSQL)
+F.ODBC.Connection!Con.OpenLocalRecordsetRW("rst",V.Global.sSQL)
+
+F.Intrinsic.Math.Sub(V.Global.iCount,1,V.Local.iCount)
+F.Intrinsic.String.SplitCSV(V.Global.sData(v.Local.iCount),V.Local.sLine)
+
+'sets bom eng to is parent y
+F.Intrinsic.String.Build("SELECT * FROM BOM_ENG WHERE PART = '{0}' ",V.Global.sParent.Trim,V.Global.sSQL)
+F.ODBC.Connection!Con.OpenLocalRecordsetRW("rstEng",V.Global.sSQL)
+F.Intrinsic.Control.If(V.ODBC.Con!rstEng.EOF,=,False)
+	F.ODBC.Con!rstEng.Set!IS_PARENT("Y")
+F.Intrinsic.Control.Else
+	F.ODBC.Con!rstEng.AddNew
+	F.ODBC.Con!rstEng.Set!PART(V.Global.sParent.Trim)
+	F.ODBC.Con!rstEng.Set!IS_PARENT("Y")
+F.Intrinsic.Control.EndIf
+F.ODBC.Con!rstEng.Update
+F.ODBC.Con!rstEng.Close
+
+'rebuild parent
+F.ODBC.Con!rst.AddNew
+F.ODBC.Con!rst.Set!PARENT(V.Global.sParent.Trim)
+F.ODBC.Con!rst.Set!SEQUENCE_BOM("0000")
+F.ODBC.Con!rst.Set!INSERT_BOM("00")
+F.ODBC.Con!rst.Set!DATE_MAINTENANCE(V.Ambient.Date.FormatYYMMDD)
+F.ODBC.Con!rst.Set!COST(0)
+F.ODBC.Con!rst.Set!QUANTITY(V.Local.sLine(4).Trim)
+F.ODBC.Con!rst.Set!UM_INVENTORY("EA")
+F.ODBC.Con!rst.Set!QUANTITY_6(V.Local.sLine(4).Trim)
+F.ODBC.Con!rst.Set!FREQUENCY(0)
+F.ODBC.Con!rst.Set!DATE_LAST_CHG(V.Ambient.Date.FormatYYYYMMDD)
+F.ODBC.Con!rst.Set!TIME_LAST_CHG(V.Ambient.Time.FormatHHNNSS00)
+F.ODBC.Con!rst.Set!LAST_CHG_BY(V.Caller.User)
+F.ODBC.Con!rst.Set!LAST_CHG_PROG("GCG_5252")
+F.ODBC.Con!rst.Update
+
+'create children
+F.ODBC.Con!rst.AddNew
+
+'get the part from style xref
+F.Intrinsic.String.Build("SELECT PART FROM GCG_3002_STYLE_XREF WHERE SM_STYLE = '{0}' ",V.Local.sLine(7),V.Global.sSQL)
+F.ODBC.Connection!Con.OpenLocalRecordsetRO("rstPart",V.Global.sSQL)
+F.Intrinsic.Control.If(V.ODBC.Con!rstPart.EOF,=,False)
+	F.ODBC.Con!rst.Set!PART(V.ODBC.Con!rstPart.FieldValTrim!PART)
+
+	'get the UM , desc, and amt cost
+	F.Intrinsic.String.Build("SELECT UM_INVENTORY, DESCRIPTION, AMT_COST FROM V_INVENTORY_MSTR WHERE PART = '{0}' ",V.ODBC.Con!rstPart.FieldValTrim!PART,V.Global.sSQL)
+	F.ODBC.Connection!Con.OpenLocalRecordsetRO("rstMstr",V.Global.sSQL)
+	F.Intrinsic.Control.If(V.ODBC.Con!rstMstr.EOF,=,False)
+		F.ODBC.Con!rst.Set!UM_INVENTORY(V.ODBC.Con!rstMstr.FieldValTrim!UM_INVENTORY)
+		F.ODBC.Con!rst.Set!COST(V.ODBC.Con!rstMstr.FieldValTrim!AMT_COST)
+	F.Intrinsic.Control.EndIf
+
+	'get the code_source
+	F.Intrinsic.String.Build("SELECT CODE_SOURCE FROM V_INVENTORY_MST2 WHERE PART = '{0}' ",V.ODBC.Con!rstPart.FieldValTrim!PART,V.Global.sSQL)
+	F.ODBC.Connection!Con.OpenLocalRecordsetRO("rstMst2",V.Global.sSQL)
+	F.Intrinsic.Control.If(V.ODBC.Con!rstMst2.EOF,=,False)
+		F.ODBC.Con!rst.Set!SOURCE(V.ODBC.Con!rstMst2.FieldValTrim!CODE_SOURCE)
+	F.Intrinsic.Control.EndIf
+
+	'get est_um_units
+	F.Intrinsic.String.Build("SELECT EST_UM_UNITS FROM V_BOM_CUTLIST WHERE PART = '{0}' AND COMPONENT = '{1}' ",V.Global.sParent.Trim,V.ODBC.Con!rstPart.FieldValTrim!PART,V.Global.sSQL)
+	F.ODBC.Connection!Con.OpenLocalRecordsetRO("rstCut",V.Global.sSQL)
+	F.Intrinsic.Control.If(V.ODBC.Con!rstCut.EOF,=,False)
+		F.Intrinsic.Control.If(V.ODBC.Con!rstCut.FieldValFloat!EST_UM_UNITS,>,0)
+			F.ODBC.Con!rst.Set!QUANTITY(V.ODBC.Con!rstCut.FieldValFloat!EST_UM_UNITS)
+			F.ODBC.Con!rst.Set!QUANTITY_6(V.ODBC.Con!rstCut.FieldValFloat!EST_UM_UNITS)
+		F.Intrinsic.Control.EndIf
+	F.Intrinsic.Control.EndIf
+
+F.Intrinsic.Control.EndIf
+
+'Find the part associated as the child
+'F.Intrinsic.String.Build("SELECT REF.PART, UM_INVENTORY, CODE_SOURCE, DESCRIPTION, AMT_COST, EST_UM_UNITS FROM GCG_3002_STYLE_XREF AS REF JOIN V_INVENTORY_MSTR AS MST ON REF.PART = MST.PART JOIN V_INVENTORY_MST2 AS MST2 ON MST.PART = MST2.PART JOIN V_BOM_CUTLIST AS CUT ON MST2.PART = CUT.COMPONENT WHERE SM_STYLE = '\{0\}' AND CUT.PART = '\{1\}' ",V.Local.sLine(7).Trim,V.Global.sParent.Trim,V.Global.sSQL)
+'F.ODBC.Connection!Con.OpenLocalRecordsetRO("rstPart",V.Global.sSQL)
+'F.Intrinsic.Control.If(V.ODBC.Con!rstPart.EOF,=,FALSE)
+
+	F.ODBC.Con!rst.Set!PARENT(V.Global.sParent.Trim)
+	F.Intrinsic.Math.Add(V.Local.iSequence,V.Local.iInc,V.Local.iSequence)
+	F.Intrinsic.String.Format(V.Local.iSequence,"0000",V.Local.sSequence)
+	F.ODBC.Con!rst.Set!SEQUENCE_BOM(V.Local.sSequence)
+'	F.ODBC.Con!rst.Set!PART(V.ODBC.Con!rstPart.FieldValTrim!PART)
+'	F.ODBC.Con!rst.Set!QUANTITY(V.ODBC.Con!rstPart.FieldValFloat!EST_UM_UNITS)
+'	F.ODBC.Con!rst.Set!SOURCE(V.ODBC.Con!rstPart.FieldValTrim!CODE_SOURCE)
+	F.ODBC.Con!rst.Set!INSERT_BOM("00")
+	F.ODBC.Con!rst.Set!DATE_MAINTENANCE(V.Ambient.Date.FormatYYMMDD)
+	F.ODBC.Con!rst.Set!DATE_LAST_CHG(V.Ambient.Date.FormatYYYYMMDD)
+'	F.ODBC.Con!rst.Set!UM_INVENTORY(V.ODBC.Con!rstPart.FieldValTrim!UM_INVENTORY)
+'	F.ODBC.Con!rst.Set!QUANTITY_6(V.ODBC.Con!rstPart.FieldValFloat!EST_UM_UNITS)
+	F.ODBC.Con!rst.Set!FREQUENCY(0)
+'	F.ODBC.Con!rst.Set!COST(V.ODBC.Con!rstPart.FieldValFloat!AMT_COST)
+	F.ODBC.Con!rst.Set!TIME_LAST_CHG(V.Ambient.Time.FormatHHNNSS00)
+	F.ODBC.Con!rst.Set!LAST_CHG_BY(V.Caller.User)
+	F.ODBC.Con!rst.Set!LAST_CHG_PROG("GCG_5252")
+
+'F.Intrinsic.Control.Else
+'	'create children
+'	F.ODBC.Con!rst.AddNew
+'	F.ODBC.Con!rst.Set!PARENT(V.Global.sParent.Trim)
+'	F.Intrinsic.Math.Add(V.Local.iSequence,V.Local.iInc,V.Local.iSequence)
+'	F.Intrinsic.String.Format(V.Local.iSequence,"0000",V.Local.sSequence)
+'	F.ODBC.Con!rst.Set!SEQUENCE_BOM(V.Local.sSequence)
+''	F.ODBC.Con!rst.Set!PART(V.ODBC.Con!rstPart.FieldValTrim!PART)
+''	F.ODBC.Con!rst.Set!QUANTITY(V.ODBC.Con!rstPart.FieldValFloat!EST_UM_UNITS)
+''	F.ODBC.Con!rst.Set!SOURCE(V.ODBC.Con!rstPart.FieldValTrim!CODE_SOURCE)
+'	F.ODBC.Con!rst.Set!INSERT_BOM("00")
+'	F.ODBC.Con!rst.Set!DATE_MAINTENANCE(V.Ambient.Date.FormatYYMMDD)
+'	F.ODBC.Con!rst.Set!DATE_LAST_CHG(V.Ambient.Date.FormatYYYYMMDD)
+''	F.ODBC.Con!rst.Set!UM_INVENTORY(V.ODBC.Con!rstPart.FieldValTrim!UM_INVENTORY)
+''	F.ODBC.Con!rst.Set!QUANTITY_6(V.ODBC.Con!rstPart.FieldValFloat!EST_UM_UNITS)
+'	F.ODBC.Con!rst.Set!FREQUENCY(0)
+''	F.ODBC.Con!rst.Set!COST(V.ODBC.Con!rstPart.FieldValFloat!AMT_COST)
+'	F.ODBC.Con!rst.Set!TIME_LAST_CHG(V.Ambient.Time.FormatHHNNSS00)
+'	F.ODBC.Con!rst.Set!LAST_CHG_BY(V.Caller.User)
+'	F.ODBC.Con!rst.Set!LAST_CHG_PROG("GCG_5252")
+'F.Intrinsic.Control.EndIf
+'UPDATE
+
+F.ODBC.Con!rst.Update
+F.ODBC.Con!rstCut.Close
+F.ODBC.Con!rstMst2.Close
+F.ODBC.Con!rstMstr.Close
+F.ODBC.Con!rstPart.Close
+F.ODBC.Con!rst.Close
+'Add counter for 2nd level children added
+F.Intrinsic.Math.Add(V.Global.i2ndAdd,1,V.Global.i2ndAdd)
+
+F.Intrinsic.Control.Catch
+    F.Intrinsic.String.Build("Project: {0}{1}{1}Subroutine: {2}{1}Error Occurred {3} with description {4}{1}{1}GAB Version: {5}",V.Ambient.ScriptPath,V.Ambient.Newline,V.Ambient.CurrentSubroutine,V.Ambient.ErrorNumber,V.Ambient.ErrorDescription,V.Ambient.GABVersion,V.Local.sError) 
+	F.Intrinsic.UI.Msgbox(V.Local.sError)
+	F.Intrinsic.Control.CallSub(Ss_form1_unload)
+Function.Intrinsic.Control.EndTry
+
+Program.Sub.RebuildChild.End
+
+Program.Sub.RebuildCutList.Start
+F.Intrinsic.Control.Try
+V.Local.sError.Declare(String,"")
+
+V.Local.sLine.Declare(String)
+V.Local.iCount.Declare(Long,1)
+V.Local.iSequence.Declare(Long)
+V.Local.sSequence.Declare(String)
+V.Local.iInc.Declare(Long)
+V.Local.sDimention.Declare(String)
+V.Local.bIn.Declare(Boolean)
+V.Local.fDIM1.Declare(Float)
+V.Local.fDIM2.Declare(Float)
+V.Local.sPart.Declare(String)
+
+'get increment amount
+F.ODBC.Connection!Con.ExecuteAndReturn("SELECT F_LONG FROM V_OP_HEADER WHERE ID = '401096' ",V.Local.iInc)
+'if never set before then set default 100
+F.Intrinsic.Control.If(V.Local.iInc,=,0)
+	V.Local.iInc.Set(100)
+F.Intrinsic.Control.EndIf
+F.Intrinsic.Math.Add(V.Local.iSequence,V.Local.iInc,V.Local.iSequence)
+F.Intrinsic.String.Format(V.Local.iSequence,"0000",V.Local.sSequence)
+
+F.Intrinsic.Control.DoUntil(V.Local.iCount,>,V.Global.sData.UBound)
+	F.Intrinsic.String.SplitCSV(V.Global.sData(v.Local.iCount),V.Local.sLine)
+	V.Local.sLine.RedimPreserve(0,11)
+	F.Intrinsic.Control.If(V.Local.sLine(10).Trim,=,"N")
+		V.Local.fDIM1.Set(0)
+		V.Local.fDIM2.Set(0)
+'		F.Intrinsic.String.GSSPartString(V.Local.sLine(1).Left17,V.Local.sLine(2).Left3,V.Local.sPart)
+		V.Local.sPart.Set(V.Local.sLine(1).Left20)
+		'Get the part from the part in the bom
+		F.Intrinsic.String.Build("SELECT PART, QUANTITY, QUANTITY_6 FROM BOM_MSTR WHERE PARENT = '{0}' AND SEQUENCE_BOM = '{1}' ",V.Local.sPart.Trim,V.Local.sSequence,V.Global.sSQL)
+		F.ODBC.Connection!Con.OpenLocalRecordsetRW("rst",V.Global.sSQL)
+'		F.Intrinsic.Control.If(V.ODBC.Con!rst.EOF,=,FALSE)
+			'Gets the property code from the part
+			F.Intrinsic.String.Build("SELECT PART, PROP_CODE FROM V_INVENTORY_MST2 WHERE PART = '{0}' ",V.ODBC.Con!rst.FieldValTrim!PART,V.Global.sSQL)
+			F.ODBC.Connection!Con.OpenLocalRecordsetRO("rst1",V.Global.sSQL)
+'			F.Intrinsic.Control.If(V.ODBC.Con!rst1.EOF,=,FALSE)
+				'select everything in the bom cutlist where the part is present should only be one
+				F.Intrinsic.String.Build("SELECT * FROM BOM_CUTLIST WHERE PART = '{0}' ",V.Local.sPart.Trim,V.Global.sSQL)
+				F.ODBC.Connection!Con.OpenLocalRecordsetRW("rstCutList",V.Global.sSQL)
+				F.Intrinsic.Control.If(V.ODBC.Con!rstCutList.EOF,=,True)
+					F.ODBC.Con!rstCutList.AddNew
+
+					'update all of the fields in the cutlist for the part
+					F.ODBC.Con!rstCutList.Set!PART(V.Local.sPart.Trim)
+					F.ODBC.Con!rstCutList.Set!COMPONENT(V.ODBC.Con!rst1.FieldValTrim!PART)
+					F.ODBC.Con!rstCutList.Set!CUTLIST_ITEM("0001")
+					F.ODBC.Con!rstCutList.Set!PROPERTY_CODE(V.ODBC.Con!rst1.FieldValTrim!PROP_CODE)
+					'Checks to see if either dimentions are blank, if they are, build them.
+					F.Intrinsic.Control.If(V.Local.sLine(5),<>,"")
+						F.Intrinsic.Control.CallSub(Dimension,"DIM",V.Local.sLine(5).Trim)
+						V.Local.fDIM1.Set(V.Args.DIM.Float)
+						F.ODBC.Con!rstCutList.Set!DIMENSION_1(V.Local.fDIM1)
+						'check to see if dim 2 has something, if it does set it, if it doesn't dont
+						F.Intrinsic.Control.If(V.Local.sLine(6),<>,"")
+							F.Intrinsic.Control.CallSub(Dimension,"DIM",V.Local.sLine(6).Trim)
+							V.Local.fDIM2.Set(V.Args.DIM.Float)
+							F.ODBC.Con!rstCutList.Set!DIMENSION_2(V.Local.fDIM2)
+						F.Intrinsic.Control.EndIf
+					'nothing was in dim 1 set dim 2 as dim 1 and be done with it
+					F.Intrinsic.Control.Else
+						F.Intrinsic.Control.If(V.Local.sLine(6),<>,"")
+							F.Intrinsic.Control.CallSub(Dimension,"DIM",V.Local.sLine(6).Trim)
+							V.Local.fDIM1.Set(V.Args.DIM.Float)
+							F.ODBC.Con!rstCutList.Set!DIMENSION_1(V.Local.fDIM1)
+						F.Intrinsic.Control.EndIf
+					F.Intrinsic.Control.EndIf
+
+					F.ODBC.Con!rstCutList.Set!SEQ("000000")
+					F.ODBC.Con!rstCutList.Set!PIECES(1)
+					F.ODBC.Con!rstCutList.Set!ANGLE_C(1)
+					F.Intrinsic.Control.CallSub(Um_units,"Code",V.ODBC.Con!rst1.FieldValTrim!PROP_CODE,"DIM1",V.Local.fDIM1,"DIM2",V.Local.fDIM2)
+					F.ODBC.Con!rstCutList.Set!EST_UM_UNITS(V.Args.Est.Float)
+					F.ODBC.Con!rst.Set!QUANTITY(V.Args.Est.Float)
+					F.Intrinsic.Control.CallSub(Um2_units,"Code",V.ODBC.Con!rst1.FieldValTrim!PROP_CODE,"DIM1",V.Local.fDIM1,"DIM2",V.Local.fDIM2)
+					F.ODBC.Con!rstCutList.Set!USQL_2ND_UM_UNITS(V.Args.Est.Float)
+					F.ODBC.Con!rst.Set!QUANTITY_6(V.Args.Est.Float)
+
+				'part exists so delete it and add a new one
+				F.Intrinsic.Control.Else
+					F.ODBC.Con!rstCutList.Close
+					F.Intrinsic.String.Build("DELETE FROM BOM_CUTLIST WHERE PART = '{0}' ",V.Local.sPart.Trim,V.Global.sSQL)
+					F.ODBC.Connection!Con.Execute(V.Global.sSQL)
+					F.Intrinsic.String.Build("SELECT * FROM BOM_CUTLIST WHERE PART = '{0}' ",V.Local.sPart.Trim,V.Global.sSQL)
+					F.ODBC.Connection!Con.OpenLocalRecordsetRW("rstCutList",V.Global.sSQL)
+					F.ODBC.Con!rstCutList.AddNew
+
+					'update all of the fields in the cutlist for the part
+					F.ODBC.Con!rstCutList.Set!PART(V.Local.sPart.Trim)
+					F.ODBC.Con!rstCutList.Set!COMPONENT(V.ODBC.Con!rst1.FieldValTrim!PART)
+					F.ODBC.Con!rstCutList.Set!CUTLIST_ITEM("0001")
+					F.ODBC.Con!rstCutList.Set!PROPERTY_CODE(V.ODBC.Con!rst1.FieldValTrim!PROP_CODE)
+					'Checks to see if either dimentions are blank, if they are, build them.
+					F.Intrinsic.Control.If(V.Local.sLine(5),<>,"")
+						F.Intrinsic.Control.CallSub(Dimension,"DIM",V.Local.sLine(5).Trim)
+						V.Local.fDIM1.Set(V.Args.DIM.Float)
+						F.ODBC.Con!rstCutList.Set!DIMENSION_1(V.Local.fDIM1)
+						'check to see if dim 2 has something, if it does set it, if it doesn't dont
+						F.Intrinsic.Control.If(V.Local.sLine(6),<>,"")
+							F.Intrinsic.Control.CallSub(Dimension,"DIM",V.Local.sLine(6).Trim)
+							V.Local.fDIM2.Set(V.Args.DIM.Float)
+							F.ODBC.Con!rstCutList.Set!DIMENSION_2(V.Local.fDIM2)
+						F.Intrinsic.Control.EndIf
+					'nothing was in dim 1 set dim 2 as dim 1 and be done with it
+					F.Intrinsic.Control.Else
+						F.Intrinsic.Control.If(V.Local.sLine(6),<>,"")
+							F.Intrinsic.Control.CallSub(Dimension,"DIM",V.Local.sLine(6).Trim)
+							V.Local.fDIM1.Set(V.Args.DIM.Float)
+							F.ODBC.Con!rstCutList.Set!DIMENSION_1(V.Local.fDIM1)
+						F.Intrinsic.Control.EndIf
+					F.Intrinsic.Control.EndIf
+
+					F.ODBC.Con!rstCutList.Set!SEQ("000000")
+					F.ODBC.Con!rstCutList.Set!PIECES(1)
+					F.ODBC.Con!rstCutList.Set!ANGLE_C(1)
+					F.Intrinsic.Control.CallSub(Um_units,"Code",V.ODBC.Con!rst1.FieldValTrim!PROP_CODE,"DIM1",V.Local.fDIM1,"DIM2",V.Local.fDIM2)
+					F.ODBC.Con!rst.Set!QUANTITY(V.Args.Est.Float)
+					F.Intrinsic.Control.CallSub(Um2_units,"Code",V.ODBC.Con!rst1.FieldValTrim!PROP_CODE,"DIM1",V.Local.fDIM1,"DIM2",V.Local.fDIM2)
+					F.ODBC.Con!rstCutList.Set!USQL_2ND_UM_UNITS(V.Args.Est.Float)
+					F.ODBC.Con!rst.Set!QUANTITY_6(V.Args.Est.Float)
+				F.Intrinsic.Control.EndIf
+				F.ODBC.Con!rstCutList.Update
+				F.ODBC.Con!rst.Update
+				F.ODBC.Con!rstCutList.Close
+
+'			F.Intrinsic.Control.EndIf
+			F.ODBC.Con!rst1.Close
+'		F.Intrinsic.Control.EndIf
+		F.ODBC.Con!rst.Close
+
+	F.Intrinsic.Control.EndIf
+
+	F.Intrinsic.Math.Add(V.Local.iCount,1,V.Local.iCount)
+F.Intrinsic.Control.Loop
+
+F.Intrinsic.Control.Catch
+    F.Intrinsic.String.Build("Project: {0}{1}{1}Subroutine: {2}{1}Error Occurred {3} with description {4}{1}{1}GAB Version: {5}",V.Ambient.ScriptPath,V.Ambient.Newline,V.Ambient.CurrentSubroutine,V.Ambient.ErrorNumber,V.Ambient.ErrorDescription,V.Ambient.GABVersion,V.Local.sError) 
+	F.Intrinsic.UI.Msgbox(V.Local.sError)
+	F.Intrinsic.Control.CallSub(Ss_form1_unload)
+Function.Intrinsic.Control.EndTry
+
+Program.Sub.RebuildCutList.End
+
+Program.Sub.Dimension.Start
+F.Intrinsic.Control.Try
+V.Local.sError.Declare(String,"")
+
+V.Local.fDimension.Declare(Float)
+V.Local.sDimension.Declare(String)
+V.Local.bIn.Declare(Boolean)
+V.Local.fDim.Declare(Float)
+V.Local.iDimension.Declare(Long)
+V.Local.sTemp.Declare(String)
+
+V.Local.sDimension.Set(V.Args.DIM)
+F.Intrinsic.String.IsInString(V.Local.sDimension,"in",True,V.Local.bIn)
+'if "in" in in the dimention take it out
+F.Intrinsic.Control.If(V.Local.bIn,=,True)
+	F.Intrinsic.String.Replace(V.Local.sDimension,"in","",V.Local.sDimension)
+F.Intrinsic.Control.EndIf
+
+F.Intrinsic.String.Replace(V.Local.sDimension,".","*!*.",V.Local.sDimension)
+F.Intrinsic.String.Split(V.Local.sDimension,"*!*",V.Local.sDimension)
+V.Local.sDimension.RedimPreserve(0,1)
+F.Intrinsic.Math.ConvertToFloat(V.Local.sDimension(0),V.Local.fDim)
+F.Intrinsic.Math.ConvertToFloat(V.Local.sDimension(1),V.Local.fDimension)
+
+'F.Intrinsic.Math.Mult(V.Local.fDimension,32,V.Local.iDimension)
+F.Intrinsic.Math.Mult(V.Local.fDimension,32,V.Local.sTemp)
+F.Intrinsic.String.Split(V.Local.sTemp,".",V.Local.sTemp)
+F.Intrinsic.Math.ConvertToLong(V.Local.sTemp(0),V.Local.iDimension)
+F.Intrinsic.Math.Mult(V.Local.fDimension,32,V.Local.fDimension)
+'case statement that find the correct interval of 32
+F.Intrinsic.Control.SelectCase(V.Local.iDimension)
+	F.Intrinsic.Control.Case(0)
+		F.Intrinsic.Control.If(V.Local.fDimension,>=,0.5)
+			V.Local.fDimension.Set(0.0313)
+		F.Intrinsic.Control.Else
+			V.Local.fDimension.Set(0)
+		F.Intrinsic.Control.EndIf
+	F.Intrinsic.Control.Case(1)
+		F.Intrinsic.Control.If(V.Local.fDimension,>=,1.5)
+			V.Local.fDimension.Set(0.0625)
+		F.Intrinsic.Control.Else
+			V.Local.fDimension.Set(0.0313)
+		F.Intrinsic.Control.EndIf
+	F.Intrinsic.Control.Case(2)
+		F.Intrinsic.Control.If(V.Local.fDimension,>=,2.5)
+			V.Local.fDimension.Set(0.0938)
+		F.Intrinsic.Control.Else
+			V.Local.fDimension.Set(0.0625)
+		F.Intrinsic.Control.EndIf
+	F.Intrinsic.Control.Case(3)
+		F.Intrinsic.Control.If(V.Local.fDimension,>=,3.5)
+			V.Local.fDimension.Set(0.125)
+		F.Intrinsic.Control.Else
+			V.Local.fDimension.Set(0.0938)
+		F.Intrinsic.Control.EndIf
+	F.Intrinsic.Control.Case(4)
+		F.Intrinsic.Control.If(V.Local.fDimension,>=,4.5)
+			V.Local.fDimension.Set(0.1563)
+		F.Intrinsic.Control.Else
+			V.Local.fDimension.Set(0.125)
+		F.Intrinsic.Control.EndIf
+	F.Intrinsic.Control.Case(5)
+		F.Intrinsic.Control.If(V.Local.fDimension,>=,5.5)
+			V.Local.fDimension.Set(0.1875)
+		F.Intrinsic.Control.Else
+			V.Local.fDimension.Set(0.1563)
+		F.Intrinsic.Control.EndIf
+	F.Intrinsic.Control.Case(6)
+		F.Intrinsic.Control.If(V.Local.fDimension,>=,6.5)
+			V.Local.fDimension.Set(0.2188)
+		F.Intrinsic.Control.Else
+			V.Local.fDimension.Set(0.1875)
+		F.Intrinsic.Control.EndIf
+	F.Intrinsic.Control.Case(7)
+		F.Intrinsic.Control.If(V.Local.fDimension,>=,7.5)
+			V.Local.fDimension.Set(0.25)
+		F.Intrinsic.Control.Else
+			V.Local.fDimension.Set(0.2188)
+		F.Intrinsic.Control.EndIf
+	F.Intrinsic.Control.Case(8)
+		F.Intrinsic.Control.If(V.Local.fDimension,>=,8.5)
+			V.Local.fDimension.Set(0.2813)
+		F.Intrinsic.Control.Else
+			V.Local.fDimension.Set(0.25)
+		F.Intrinsic.Control.EndIf
+	F.Intrinsic.Control.Case(9)
+		F.Intrinsic.Control.If(V.Local.fDimension,>=,9.5)
+			V.Local.fDimension.Set(0.3125)
+		F.Intrinsic.Control.Else
+			V.Local.fDimension.Set(0.2813)
+		F.Intrinsic.Control.EndIf
+	F.Intrinsic.Control.Case(10)
+		F.Intrinsic.Control.If(V.Local.fDimension,>=,10.5)
+			V.Local.fDimension.Set(0.3438)
+		F.Intrinsic.Control.Else
+			V.Local.fDimension.Set(0.3125)
+		F.Intrinsic.Control.EndIf
+	F.Intrinsic.Control.Case(11)
+		F.Intrinsic.Control.If(V.Local.fDimension,>=,11.5)
+			V.Local.fDimension.Set(0.375)
+		F.Intrinsic.Control.Else
+			V.Local.fDimension.Set(0.3438)
+		F.Intrinsic.Control.EndIf
+	F.Intrinsic.Control.Case(12)
+		F.Intrinsic.Control.If(V.Local.fDimension,>=,12.5)
+			V.Local.fDimension.Set(0.4063)
+		F.Intrinsic.Control.Else
+			V.Local.fDimension.Set(0.375)
+		F.Intrinsic.Control.EndIf
+	F.Intrinsic.Control.Case(13)
+		F.Intrinsic.Control.If(V.Local.fDimension,>=,13.5)
+			V.Local.fDimension.Set(0.4375)
+		F.Intrinsic.Control.Else
+			V.Local.fDimension.Set(0.4063)
+		F.Intrinsic.Control.EndIf
+	F.Intrinsic.Control.Case(14)
+		F.Intrinsic.Control.If(V.Local.fDimension,>=,14.5)
+			V.Local.fDimension.Set(0.4688)
+		F.Intrinsic.Control.Else
+			V.Local.fDimension.Set(0.4375)
+		F.Intrinsic.Control.EndIf
+	F.Intrinsic.Control.Case(15)
+		F.Intrinsic.Control.If(V.Local.fDimension,>=,15.5)
+			V.Local.fDimension.Set(0.5)
+		F.Intrinsic.Control.Else
+			V.Local.fDimension.Set(0.4688)
+		F.Intrinsic.Control.EndIf
+	F.Intrinsic.Control.Case(16)
+		F.Intrinsic.Control.If(V.Local.fDimension,>=,16.5)
+			V.Local.fDimension.Set(0.5313)
+		F.Intrinsic.Control.Else
+			V.Local.fDimension.Set(0.5)
+		F.Intrinsic.Control.EndIf
+	F.Intrinsic.Control.Case(17)
+		F.Intrinsic.Control.If(V.Local.fDimension,>=,17.5)
+			V.Local.fDimension.Set(0.5625)
+		F.Intrinsic.Control.Else
+			V.Local.fDimension.Set(0.5313)
+		F.Intrinsic.Control.EndIf
+	F.Intrinsic.Control.Case(18)
+		F.Intrinsic.Control.If(V.Local.fDimension,>=,18.5)
+			V.Local.fDimension.Set(0.5938)
+		F.Intrinsic.Control.Else
+			V.Local.fDimension.Set(0.5625)
+		F.Intrinsic.Control.EndIf
+	F.Intrinsic.Control.Case(19)
+		F.Intrinsic.Control.If(V.Local.fDimension,>=,19.5)
+			V.Local.fDimension.Set(0.625)
+		F.Intrinsic.Control.Else
+			V.Local.fDimension.Set(0.5938)
+		F.Intrinsic.Control.EndIf
+	F.Intrinsic.Control.Case(20)
+		F.Intrinsic.Control.If(V.Local.fDimension,>=,20.5)
+			V.Local.fDimension.Set(0.6563)
+		F.Intrinsic.Control.Else
+			V.Local.fDimension.Set(0.625)
+		F.Intrinsic.Control.EndIf
+	F.Intrinsic.Control.Case(21)
+		F.Intrinsic.Control.If(V.Local.fDimension,>=,21.5)
+			V.Local.fDimension.Set(0.6875)
+		F.Intrinsic.Control.Else
+			V.Local.fDimension.Set(0.6563)
+		F.Intrinsic.Control.EndIf
+	F.Intrinsic.Control.Case(22)
+		F.Intrinsic.Control.If(V.Local.fDimension,>=,22.5)
+			V.Local.fDimension.Set(0.7188)
+		F.Intrinsic.Control.Else
+			V.Local.fDimension.Set(0.6875)
+		F.Intrinsic.Control.EndIf
+	F.Intrinsic.Control.Case(23)
+		F.Intrinsic.Control.If(V.Local.fDimension,>=,23.5)
+			V.Local.fDimension.Set(0.75)
+		F.Intrinsic.Control.Else
+			V.Local.fDimension.Set(0.7188)
+		F.Intrinsic.Control.EndIf
+	F.Intrinsic.Control.Case(24)
+		F.Intrinsic.Control.If(V.Local.fDimension,>=,24.5)
+			V.Local.fDimension.Set(0.7813)
+		F.Intrinsic.Control.Else
+			V.Local.fDimension.Set(0.75)
+		F.Intrinsic.Control.EndIf
+	F.Intrinsic.Control.Case(25)
+		F.Intrinsic.Control.If(V.Local.fDimension,>=,25.5)
+			V.Local.fDimension.Set(0.8125)
+		F.Intrinsic.Control.Else
+			V.Local.fDimension.Set(0.7813)
+		F.Intrinsic.Control.EndIf
+	F.Intrinsic.Control.Case(26)
+		F.Intrinsic.Control.If(V.Local.fDimension,>=,26.5)
+			V.Local.fDimension.Set(0.8438)
+		F.Intrinsic.Control.Else
+			V.Local.fDimension.Set(0.8125)
+		F.Intrinsic.Control.EndIf
+	F.Intrinsic.Control.Case(27)
+		F.Intrinsic.Control.If(V.Local.fDimension,>=,27.5)
+			V.Local.fDimension.Set(0.875)
+		F.Intrinsic.Control.Else
+			V.Local.fDimension.Set(0.8438)
+		F.Intrinsic.Control.EndIf
+	F.Intrinsic.Control.Case(28)
+		F.Intrinsic.Control.If(V.Local.fDimension,>=,28.5)
+			V.Local.fDimension.Set(0.9063)
+		F.Intrinsic.Control.Else
+			V.Local.fDimension.Set(0.875)
+		F.Intrinsic.Control.EndIf
+	F.Intrinsic.Control.Case(29)
+		F.Intrinsic.Control.If(V.Local.fDimension,>=,29.5)
+			V.Local.fDimension.Set(0.9375)
+		F.Intrinsic.Control.Else
+			V.Local.fDimension.Set(0.9063)
+		F.Intrinsic.Control.EndIf
+	F.Intrinsic.Control.Case(30)
+		F.Intrinsic.Control.If(V.Local.fDimension,>=,30.5)
+			V.Local.fDimension.Set(0.9688)
+		F.Intrinsic.Control.Else
+			V.Local.fDimension.Set(0.9375)
+		F.Intrinsic.Control.EndIf
+	F.Intrinsic.Control.Case(31)
+		F.Intrinsic.Control.If(V.Local.fDimension,>=,31.5)
+			V.Local.fDimension.Set(1)
+		F.Intrinsic.Control.Else
+			V.Local.fDimension.Set(0.9688)
+		F.Intrinsic.Control.EndIf
+F.Intrinsic.Control.EndSelect
+
+'join the numbers back together
+F.Intrinsic.Math.Add(V.Local.fDim,V.Local.fDimension,V.Local.fDimension)
+
+F.Intrinsic.Variable.AddRV("DIM",V.Local.fDimension)
+
+F.Intrinsic.Control.Catch
+    F.Intrinsic.String.Build("Project: {0}{1}{1}Subroutine: {2}{1}Error Occurred {3} with description {4}{1}{1}GAB Version: {5}",V.Ambient.ScriptPath,V.Ambient.Newline,V.Ambient.CurrentSubroutine,V.Ambient.ErrorNumber,V.Ambient.ErrorDescription,V.Ambient.GABVersion,V.Local.sError) 
+	F.Intrinsic.UI.Msgbox(V.Local.sError)
+	F.Intrinsic.Control.CallSub(Ss_form1_unload)
+Function.Intrinsic.Control.EndTry
+
+Program.Sub.Dimension.End
+
+Program.Sub.UM_Units.Start
+F.Intrinsic.Control.Try
+V.Local.sError.Declare(String,"")
+
+V.Local.fEst.Declare(Float)
+V.Local.sEval.Declare(String)
+V.Local.sEst.Declare(String)
+
+F.Intrinsic.Control.If(V.Args.DIM1,=,0)
+	F.Intrinsic.Variable.AddRV("Est",V.Args.DIM1.String)
+	F.Intrinsic.Control.ExitSub
+F.Intrinsic.Control.EndIf
+'Check to make sure there is a formula
+F.Intrinsic.String.Build("SELECT OPERAND_1 FROM V_RTR_CUT_SHAPE WHERE SHAPE_CODE = '{0}' ",V.Args.Code,V.Global.sSQL)
+F.ODBC.Connection!Con.OpenLocalRecordsetRO("rst",V.Global.sSQL)
+F.Intrinsic.Control.If(V.ODBC.Con!rst.FieldValTrim!OPERAND_1,=,"")
+	F.ODBC.Con!rst.Close
+	F.Intrinsic.Variable.AddRV("Est",V.Args.DIM1.String)
+	F.Intrinsic.Control.ExitSub
+F.Intrinsic.Control.EndIf
+F.ODBC.Con!rst.Close
+
+'sets the formula to sEval
+F.Intrinsic.String.Build("SELECT CELL_1, OPERAND_1, CELL_2, OPERAND_2, CELL_3, OPERAND_3, CELL_4, OPERAND_4, CELL_5, OPERAND_5, CELL_6, OPERAND_6, CELL_7, OPERAND_7, CELL_8, OPERAND_8, CELL_9, OPERAND_9 FROM V_RTR_CUT_SHAPE WHERE SHAPE_CODE = '{0}' ",V.Args.Code,V.Global.sSQL)
+F.ODBC.Connection!Con.ExecuteAndReturn(V.Global.sSQL,V.Local.sEval)
+F.Intrinsic.String.Build("SELECT CONSTANT_1 AS '6', CONSTANT_2 AS '7', DENSITY AS '8', CONV_FACTOR AS '9' FROM V_RTR_CUT_SHAPE WHERE SHAPE_CODE = '{0}' ",V.Args.Code,V.Global.sSQL)
+F.ODBC.Connection!Con.OpenLocalRecordsetRO("rstForm",V.Global.sSQL)
+
+'take out delimiters
+F.Intrinsic.String.Replace(V.Local.sEval,"*!*","",V.Local.sEval)
+
+'replace fields from the formula
+F.Intrinsic.String.Replace(V.Local.sEval,"0","",V.Local.sEval)
+F.Intrinsic.String.Replace(V.Local.sEval,"1","A",V.Local.sEval)
+F.Intrinsic.String.Replace(V.Local.sEval,"2","B",V.Local.sEval)
+F.Intrinsic.String.Replace(V.Local.sEval,"6","C",V.Local.sEval)
+F.Intrinsic.String.Replace(V.Local.sEval,"7","D",V.Local.sEval)
+F.Intrinsic.String.Replace(V.Local.sEval,"8","E",V.Local.sEval)
+F.Intrinsic.String.Replace(V.Local.sEval,"9","F",V.Local.sEval)
+F.Intrinsic.String.Replace(V.Local.sEval,"A",V.Args.DIM1.String,V.Local.sEval)
+F.Intrinsic.String.Replace(V.Local.sEval,"B",V.Args.DIM2.String,V.Local.sEval)
+F.Intrinsic.String.Replace(V.Local.sEval,"C",V.ODBC.Con!rstForm.FieldValTrim!6,V.Local.sEval)
+F.Intrinsic.String.Replace(V.Local.sEval,"D",V.ODBC.Con!rstForm.FieldValTrim!7,V.Local.sEval)
+F.Intrinsic.String.Replace(V.Local.sEval,"E",V.ODBC.Con!rstForm.FieldValTrim!8,V.Local.sEval)
+F.Intrinsic.String.Replace(V.Local.sEval,"F",V.ODBC.Con!rstForm.FieldValTrim!9,V.Local.sEval)
+
+F.ODBC.Con!rstForm.Close
+
+'Evaluate the formula from the text created above
+F.Intrinsic.Math.Evaluate(V.Local.sEval,V.Local.fEst)
+F.Intrinsic.String.Split(V.Local.fEst,".",V.Local.sEst)
+V.Local.sEst.RedimPreserve(0,1)
+V.Local.sEst(1).Set(V.Local.sEst(1).Left4)
+F.Intrinsic.Control.If(V.Local.sEst(1),<>,"")
+	F.Intrinsic.String.Join(V.Local.sEst,".",V.Local.fEst)
+F.Intrinsic.Control.EndIf
+
+F.Intrinsic.Variable.AddRV("Est",V.Local.fEst)
+
+F.Intrinsic.Control.Catch
+    F.Intrinsic.String.Build("Project: {0}{1}{1}Subroutine: {2}{1}Error Occurred {3} with description {4}{1}{1}GAB Version: {5}",V.Ambient.ScriptPath,V.Ambient.Newline,V.Ambient.CurrentSubroutine,V.Ambient.ErrorNumber,V.Ambient.ErrorDescription,V.Ambient.GABVersion,V.Local.sError) 
+	F.Intrinsic.UI.Msgbox(V.Local.sError)
+	F.Intrinsic.Control.CallSub(Ss_form1_unload)
+Function.Intrinsic.Control.EndTry
+
+Program.Sub.UM_Units.End
+
+Program.Sub.UM2_Units.Start
+F.Intrinsic.Control.Try
+V.Local.sError.Declare(String,"")
+
+V.Local.fEst.Declare(Float)
+V.Local.sEval.Declare(String)
+V.Local.sEst.Declare(String)
+
+F.Intrinsic.Control.If(V.Args.DIM1,=,0)
+	F.Intrinsic.Variable.AddRV("Est",V.Args.DIM1.String)
+	F.Intrinsic.Control.ExitSub
+F.Intrinsic.Control.EndIf
+
+'Check to make sure there is a formula
+F.Intrinsic.String.Build("SELECT OPERAND_UM2_1 FROM V_RTR_CUT_SHAPE WHERE SHAPE_CODE = '{0}' ",V.Args.Code,V.Global.sSQL)
+F.ODBC.Connection!Con.OpenLocalRecordsetRO("rst",V.Global.sSQL)
+F.Intrinsic.Control.If(V.ODBC.Con!rst.FieldValTrim!OPERAND_UM2_1,=,"")
+	F.ODBC.Con!rst.Close
+	F.Intrinsic.Variable.AddRV("Est",V.Args.DIM1.String)
+	F.Intrinsic.Control.ExitSub
+F.Intrinsic.Control.EndIf
+F.ODBC.Con!rst.Close
+
+'sets the formula to sEval
+F.Intrinsic.String.Build("SELECT CELL_UM2_1, OPERAND_UM2_1, CELL_UM2_2, OPERAND_UM2_2, CELL_UM2_3, OPERAND_UM2_3, CELL_UM2_4, OPERAND_UM2_4, CELL_UM2_5, OPERAND_UM2_5, CELL_UM2_6, OPERAND_UM2_6, CELL_UM2_7, OPERAND_UM2_7, CELL_UM2_8, OPERAND_UM2_8, CELL_UM2_9, OPERAND_UM2_9 FROM V_RTR_CUT_SHAPE WHERE SHAPE_CODE = '{0}' ",V.Args.Code,V.Global.sSQL)
+F.ODBC.Connection!Con.ExecuteAndReturn(V.Global.sSQL,V.Local.sEval)
+F.Intrinsic.String.Build("SELECT CONSTANT_1 AS '6', CONSTANT_2 AS '7', DENSITY AS '8', CONV_FACTOR AS '9' FROM V_RTR_CUT_SHAPE WHERE SHAPE_CODE = '{0}' ",V.Args.Code,V.Global.sSQL)
+F.ODBC.Connection!Con.OpenLocalRecordsetRO("rstForm",V.Global.sSQL)
+
+'take out delimiter
+F.Intrinsic.String.Replace(V.Local.sEval,"*!*","",V.Local.sEval)
+
+'replace fields from the formula
+F.Intrinsic.String.Replace(V.Local.sEval,"0","",V.Local.sEval)
+F.Intrinsic.String.Replace(V.Local.sEval,"1","A",V.Local.sEval)
+F.Intrinsic.String.Replace(V.Local.sEval,"2","B",V.Local.sEval)
+F.Intrinsic.String.Replace(V.Local.sEval,"6","C",V.Local.sEval)
+F.Intrinsic.String.Replace(V.Local.sEval,"7","D",V.Local.sEval)
+F.Intrinsic.String.Replace(V.Local.sEval,"8","E",V.Local.sEval)
+F.Intrinsic.String.Replace(V.Local.sEval,"9","F",V.Local.sEval)
+F.Intrinsic.String.Replace(V.Local.sEval,"A",V.Args.DIM1.String,V.Local.sEval)
+F.Intrinsic.String.Replace(V.Local.sEval,"B",V.Args.DIM2.String,V.Local.sEval)
+F.Intrinsic.String.Replace(V.Local.sEval,"C",V.ODBC.Con!rstForm.FieldValTrim!6,V.Local.sEval)
+F.Intrinsic.String.Replace(V.Local.sEval,"D",V.ODBC.Con!rstForm.FieldValTrim!7,V.Local.sEval)
+F.Intrinsic.String.Replace(V.Local.sEval,"E",V.ODBC.Con!rstForm.FieldValTrim!8,V.Local.sEval)
+F.Intrinsic.String.Replace(V.Local.sEval,"F",V.ODBC.Con!rstForm.FieldValTrim!9,V.Local.sEval)
+
+F.ODBC.Con!rstForm.Close
+
+'Evaluate the formula from the text created above
+F.Intrinsic.Math.Evaluate(V.Local.sEval,V.Local.fEst)
+F.Intrinsic.String.Split(V.Local.fEst,".",V.Local.sEst)
+V.Local.sEst.RedimPreserve(0,1)
+V.Local.sEst(1).Set(V.Local.sEst(1).Left4)
+F.Intrinsic.Control.If(V.Local.sEst(1),<>,"")
+	F.Intrinsic.String.Join(V.Local.sEst,".",V.Local.fEst)
+F.Intrinsic.Control.EndIf
+
+F.Intrinsic.Variable.AddRV("Est",V.Local.fEst)
+
+F.Intrinsic.Control.Catch
+    F.Intrinsic.String.Build("Project: {0}{1}{1}Subroutine: {2}{1}Error Occurred {3} with description {4}{1}{1}GAB Version: {5}",V.Ambient.ScriptPath,V.Ambient.Newline,V.Ambient.CurrentSubroutine,V.Ambient.ErrorNumber,V.Ambient.ErrorDescription,V.Ambient.GABVersion,V.Local.sError) 
+	F.Intrinsic.UI.Msgbox(V.Local.sError)
+	F.Intrinsic.Control.CallSub(Ss_form1_unload)
+Function.Intrinsic.Control.EndTry
+
+Program.Sub.UM2_Units.End
+Program.Sub.ss_form1_unload.Start
+F.Intrinsic.Control.Try
+v.Local.sError.Declare(String,"")
+
+F.ODBC.Connection!Con.Close
+F.Intrinsic.Control.End
+
+F.Intrinsic.Control.Catch
+    F.Intrinsic.String.Build("Project: {0}{1}{1}Subroutine: {2}{1}Error Occurred {3} with description {4}{1}{1}GAB Version: {5}",V.Ambient.ScriptPath,V.Ambient.Newline,V.Ambient.CurrentSubroutine,V.Ambient.ErrorNumber,V.Ambient.ErrorDescription,V.Ambient.GABVersion,V.Local.sError) 
+	F.Intrinsic.UI.Msgbox(V.Local.sError)
+	F.Intrinsic.Control.End
+Function.Intrinsic.Control.EndTry
+
+
+Program.Sub.ss_form1_unload.End
+
+Program.Sub.Screen.Start
+F.Intrinsic.Control.Try
+V.Local.sError.Declare(String,"")
+
+'Adds info to the screen and displays it
+Gui.SS_Form1.txt1stAdd.Text(V.Global.i1stAdd)
+Gui.SS_Form1.txt1stRej.Text(V.Global.i1stRej)
+Gui.SS_Form1.txt2ndAdd.Text(V.Global.i2ndAdd)
+Gui.SS_Form1.txt2ndRej.Text(V.Global.i2ndRej)
+
+Gui.SS_Form1..Show
+
+'loops until the window is closed and then closes the program
+F.Intrinsic.Control.DoUntil(V.Screen.SS_Form1.Visible,=,False)
+F.Intrinsic.Control.Loop
+
+F.Intrinsic.Control.CallSub(Ss_form1_unload)
+
+F.Intrinsic.Control.Catch
+    F.Intrinsic.String.Build("Project: {0}{1}{1}Subroutine: {2}{1}Error Occurred {3} with description {4}{1}{1}GAB Version: {5}",V.Ambient.ScriptPath,V.Ambient.Newline,V.Ambient.CurrentSubroutine,V.Ambient.ErrorNumber,V.Ambient.ErrorDescription,V.Ambient.GABVersion,V.Local.sError) 
+	F.Intrinsic.UI.Msgbox(V.Local.sError)
+	F.Intrinsic.Control.CallSub(Ss_form1_unload)
+Function.Intrinsic.Control.EndTry
+
+
+Program.Sub.Screen.End
+
+Program.Sub.Overwrite.Start
+F.Intrinsic.Control.Try
+V.Local.sError.Declare(String,"")
+
+V.Local.sDesc.Declare(String)
+V.Local.sRev.Declare(String)
+
+V.Local.sDesc.Set(V.Args.Description.Left30)
+V.Local.sRev.Set(V.Args.Rev.Trim)
+
+'Overwrite inventory and bom eng if flag in spot 11 says Y
+F.Intrinsic.String.Build("SELECT * FROM INVENTORY_MSTR WHERE PART = '{0}' ",V.Args.Part.Trim,V.Global.sSQL)
+F.ODBC.Connection!Con.OpenLocalRecordsetRW("rstInv",V.Global.sSQL)
+F.Intrinsic.Control.If(V.ODBC.Con!rstInv.EOF,=,False)
+	F.ODBC.Con!rstInv.Set!DESCRIPTION(V.Local.sDesc.Trim)
+	F.ODBC.Con!rstInv.Update
+F.Intrinsic.Control.EndIf
+F.ODBC.Con!rstInv.Close
+
+'Overwrite inv2 text info 2 with REV from spot 2
+F.Intrinsic.String.Build("SELECT * FROM INVENTORY_MST2 WHERE PART = '{0}' ",V.Args.Part.Trim,V.Global.sSQL)
+F.ODBC.Connection!Con.OpenLocalRecordsetRW("rstInv2",V.Global.sSQL)
+F.Intrinsic.Control.If(V.ODBC.Con!rstInv2.EOF,=,False)
+	F.ODBC.Con!rstInv2.Set!TEXT_INFO2(V.Local.sRev.Trim)
+	F.ODBC.Con!rstInv2.Update
+F.Intrinsic.Control.EndIf
+F.ODBC.Con!rstInv2.Close
+
+F.Intrinsic.String.Build("SELECT * FROM BOM_ENG WHERE PART = '{0}' ",V.Args.Part.Trim,V.Global.sSQL)
+F.ODBC.Connection!Con.OpenLocalRecordsetRW("rstEng",V.Global.sSQL)
+F.Intrinsic.Control.If(V.ODBC.Con!rstENG.EOF,=,False)
+
+	F.ODBC.Con!rstENG.Set!DESCRIPTION(V.Local.sDesc.Trim)
+
+	F.ODBC.Con!rstENG.Update
+F.Intrinsic.Control.EndIf
+F.ODBC.Con!rstENG.Close
+
+F.Intrinsic.Control.Catch
+    F.Intrinsic.String.Build("Project: {0}{1}{1}Subroutine: {2}{1}Error Occurred {3} with description {4}{1}{1}GAB Version: {5}",V.Ambient.ScriptPath,V.Ambient.Newline,V.Ambient.CurrentSubroutine,V.Ambient.ErrorNumber,V.Ambient.ErrorDescription,V.Ambient.GABVersion,V.Local.sError) 
+	F.Intrinsic.UI.Msgbox(V.Local.sError)
+	F.Intrinsic.Control.CallSub(Ss_form1_unload)
+Function.Intrinsic.Control.EndTry
+
+
+Program.Sub.Overwrite.End
+
+Program.Sub.Comments.Start
+${$0$}$GCG_3002_AutoCAD$}$Strider$}$11/09/15 3:14:51 PM$}$False
+${$3$}$0$}$$}$0$}$-1$}$$}$12:00:00 AM$}$This is a conversion from Cobol to GAB for Mestex. Program XUPLBOMX.
+${$5$}$2.0.0.0$}$2
+${$6$}$lperrine$}$20221117160736093$}$2NUFt80QpM3hrjXY+iDnxks7M/ROcjnGWtx+efOAbQRHPZ3d0Sj9qmGlwMDuNlPzL8OCNB8PMIm1yPH4yUSgjQ==
+Program.Sub.Comments.End
+
+Program.Sub.ScreenSS.Start
+SS_Form1{{CAPTION::BOM Upload Totals
+SS_Form1.CTRL{{NAME::lbl1\\TYPE::1\\CAPTION::1st Level BOM Totals\\GROUP::-1\\BROWSER::0\\SIZE::1
+SS_Form1.CTRL{{NAME::txt1stAdd\\TYPE::2\\CAPTION::BOM Children Added\\GROUP::-1\\BROWSER::0\\SIZE::1
+SS_Form1.CTRL{{NAME::txt1stRej\\TYPE::2\\CAPTION::BOM Children Rejected\\GROUP::-1\\BROWSER::0\\SIZE::1
+SS_Form1.CTRL{{NAME::lbl2\\TYPE::1\\CAPTION::2nd Level BOM Totals\\GROUP::-1\\BROWSER::0\\SIZE::1
+SS_Form1.CTRL{{NAME::txt2ndAdd\\TYPE::2\\CAPTION::BOM Children Added\\GROUP::-1\\BROWSER::0\\SIZE::1
+SS_Form1.CTRL{{NAME::txt2ndRej\\TYPE::2\\CAPTION::BOM Children Rejected\\GROUP::-1\\BROWSER::0\\SIZE::1
+SS_Form1.CTRL{{NAME::cmdOk\\TYPE::5\\CAPTION::Ok\\TABSTOP::1\\GROUP::-1\\BROWSER::0\\SIZE::1
+
+Program.Sub.ScreenSS.End
+
